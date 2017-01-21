@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4799539725540734}
   - component: {fileID: 33075290710954618}
   - component: {fileID: 23647864481177692}
+  - component: {fileID: 64591286945052180}
   m_Layer: 0
   m_Name: Boat_player
   m_TagString: Untagged
@@ -74,6 +75,7 @@ GameObject:
   - component: {fileID: 54133136751005656}
   - component: {fileID: 114677993135173004}
   - component: {fileID: 82040081592137900}
+  - component: {fileID: 114918004883120718}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -101,7 +103,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1977015226727206}
   m_LocalRotation: {x: 0, y: 0.026613167, z: 0, w: 0.9996458}
-  m_LocalPosition: {x: 0, y: 0.3941629, z: 0.04861951}
+  m_LocalPosition: {x: 0, y: -2.54, z: 0.04861951}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4799539725540734}
@@ -257,7 +259,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1977015226727206}
   serializedVersion: 2
-  m_Mass: 0.1
+  m_Mass: 0.2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -265,6 +267,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &64591286945052180
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1354832356268684}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 1
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 6eb295ac7bdb74579beb3c91024a3040, type: 3}
 --- !u!65 &65409706279627960
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -276,7 +292,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3.51, y: 0.23, z: 4.87}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.26, z: 0}
 --- !u!82 &82040081592137900
 AudioSource:
   m_ObjectHideFlags: 1
@@ -372,7 +388,7 @@ MonoBehaviour:
   dampCoeff: 0.08
   sink: 0
   sinkForce: 3
-  defaultForwardPush: 0.5
+  defaultForwardPush: 0.8
   m_accelerationFactor: 5
   m_turningFactor: 1
   m_accelerationTorqueFactor: 56.1
@@ -384,3 +400,16 @@ MonoBehaviour:
   m_motors:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &114918004883120718
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1977015226727206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a342b064acf37284d8d3cd6fdc6592f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSwiped: 0
+  isSwipedUp: 0
