@@ -58,7 +58,7 @@ public class BoatController : Boyancy
 		setInputs (-touchInput.y, touchInput.x);
 		#endif
 
-		//Rotate ();
+		Rotate ();
 	}
 
 	public void setInputs(float iVerticalInput, float iHorizontalInput)
@@ -87,13 +87,13 @@ public class BoatController : Boyancy
 			m_horizontalInput * -m_turningTorqueFactor
         );
 		*/
-
+		/*
 		m_rigidbody.AddRelativeTorque(
 			0,
 			m_horizontalInput * m_turningFactor,
 			m_horizontalInput * -m_turningTorqueFactor
 		);
-
+		*/
 
 
 		/*
@@ -161,8 +161,8 @@ public class BoatController : Boyancy
 			//Banking
 
 			newRotation.x = 0 ;
-			newRotation.y = 0 ;
-			//newRotation.z = 0 ;
+			//newRotation.y = 0 ;
+			newRotation.z = 0 ;
 			transform.rotation = Quaternion.Slerp(transform.rotation , newRotation, Time.deltaTime * currSpeed);
 			//transform.rotation = Quaternion.Slerp(transform.rotation , newRotation, Time.deltaTime * 50);
 		}
