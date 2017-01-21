@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Lean.Touch ;
 
 public class BoatController : Boyancy
 {
 
 	[Header("Physic :")]
+	//Add
+	[SerializeField] private float defaultForwardPush = 0.5f ;
+	//Add
 	[SerializeField] private float m_accelerationFactor = 2.0F;
 	[SerializeField] private float m_turningFactor = 2.0F;
 	[SerializeField] private float m_accelerationTorqueFactor = 35F;
@@ -25,9 +29,15 @@ public class BoatController : Boyancy
     private Rigidbody m_rigidbody;
 	private Vector3 m_androidInputInit;
 
+	//New
 	private float gyroForce = 0 ;
+	private float autoVerticalInput = 0 ;
+	private bool move = false ;
+	private bool dive = false ;
+	private bool jump = false ;
+	private LeanSwipeDirection4 swipeControl; 
 
-    protected override void Start()
+	protected override void Start()
     {
         base.Start();
 
@@ -36,6 +46,8 @@ public class BoatController : Boyancy
         m_rigidbody.angularDrag = 1;
 
 		initPosition ();
+		StartMovement ();
+		swipeControl = GetComponent<LeanSwipeDirection4> ();
 	}
 
 	public void initPosition()
@@ -47,24 +59,44 @@ public class BoatController : Boyancy
 
 	void Update()
 	{
-		#if UNITY_EDITOR 
-		setInputs (Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
-		#elif UNITY_ANDROID
-		Vector3 touchInput = Input.acceleration - m_androidInputInit;
+		if (move)
+		{
+			#if UNITY_EDITOR 
+			setInputs (Input.GetAxisRaw ("Vertical"), Input.GetAxisRaw ("Horizontal"));
+			#elif UNITY_ANDROID
+			Vector3 touchInput = Input.acceleration - m_androidInputInit;
 		
-		if (touchInput.sqrMagnitude > 1)
-			touchInput.Normalize();
+			if (touchInput.sqrMagnitude > 1)
+				touchInput.Normalize();
 		
-		setInputs (-touchInput.y, touchInput.x);
-		#endif
+			setInputs (-touchInput.y, touchInput.x);
+			#endif
 
-		Rotate ();
+			Rotate ();
+
+			if (swipeControl.isSwiped && !jump && !dive)
+			{
+				if (swipeControl.isSwipedUp) 
+				{
+					jump = true;
+					dive = false;
+				}
+				else
+				{
+					jump = false;
+					dive = true;
+				}
+
+				swipeControl.isSwiped = false;
+				swipeControl.isSwipedUp = false;
+			}
+		} 
 	}
 
 	public void setInputs(float iVerticalInput, float iHorizontalInput)
 	{
 		//m_verticalInput = iVerticalInput;
-		m_verticalInput = 1;
+		m_verticalInput = defaultForwardPush;
 		m_horizontalInput = iHorizontalInput;
 	}
 
@@ -120,6 +152,16 @@ public class BoatController : Boyancy
         }
 		*/
 
+		if (jump)
+		{
+			PlayerJump ();
+		}
+
+		if (dive)
+		{
+			
+		}
+
 		if (m_enableAudio && m_boatAudioSource != null) 
 		{
             m_boatAudioSource.enabled = m_verticalInput != 0;
@@ -136,6 +178,7 @@ public class BoatController : Boyancy
 	private float maxBank = 90f ;
 	private Vector3 prevPosition = Vector3.zero ;
 	private Vector3 prevVelocity = Vector3.zero ;
+
 	void Rotate()
 	{
 		Vector3 currPos = transform.position ;   
@@ -160,13 +203,34 @@ public class BoatController : Boyancy
 			newRotation = newRotation * banking ;
 			//Banking
 
-			newRotation.x = 0 ;
+			//newRotation.x = 0 ;
 			//newRotation.y = 0 ;
-			newRotation.z = 0 ;
+			//newRotation.z = 0 ;
 			transform.rotation = Quaternion.Slerp(transform.rotation , newRotation, Time.deltaTime * currSpeed);
 			//transform.rotation = Quaternion.Slerp(transform.rotation , newRotation, Time.deltaTime * 50);
 		}
 		prevPosition = transform.position ;	
 		prevVelocity = GetComponent<Rigidbody>().velocity ;
+	}
+
+	void PlayerJump()
+	{
+		Debug.Log ("Jump!");
+		Vector3 jumpDir = new Vector3 (0, 1, 1);
+		m_rigidbody.AddRelativeForce(jumpDir * m_verticalInput * 500);
+		jump = false;
+		dive = false;
+	}
+
+	public void StartMovement()
+	{
+		move = true;
+		autoVerticalInput = defaultForwardPush ;
+	}
+
+	public void PauseMovement()
+	{
+		move = false;
+		autoVerticalInput = 0 ;
 	}
 }
