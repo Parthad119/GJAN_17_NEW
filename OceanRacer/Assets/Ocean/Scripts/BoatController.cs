@@ -35,7 +35,10 @@ public class BoatController : Boyancy
 	private bool move = false ;
 	private bool dive = false ;
 	private bool jump = false ;
+	private bool isUnderwater = false ;
 	private LeanSwipeDirection4 swipeControl; 
+
+	private GameObject cameraTint; 
 
 	protected override void Start()
     {
@@ -48,6 +51,8 @@ public class BoatController : Boyancy
 		initPosition ();
 		StartMovement ();
 		swipeControl = GetComponent<LeanSwipeDirection4> ();
+		cameraTint = Camera.main.transform.GetChild (0).gameObject;
+		cameraTint.SetActive (false);
 	}
 
 	public void initPosition()
@@ -72,7 +77,15 @@ public class BoatController : Boyancy
 			setInputs (-touchInput.y, touchInput.x);
 			#endif
 
-			Rotate ();
+//			if (isUnderwater)
+//			{
+//				Debug.Log ("Is Underwater...");
+//				Vector3 nextPos = transform.forward + transform.position  ;
+//				transform.position = nextPos;
+//			}
+
+
+			//Rotate ();
 
 			if (swipeControl.isSwiped && !jump && !dive)
 			{
@@ -90,6 +103,7 @@ public class BoatController : Boyancy
 				swipeControl.isSwiped = false;
 				swipeControl.isSwipedUp = false;
 			}
+			Rotate ();
 		} 
 	}
 
@@ -159,7 +173,7 @@ public class BoatController : Boyancy
 
 		if (dive)
 		{
-			
+			PlayerDive ();
 		}
 
 		if (m_enableAudio && m_boatAudioSource != null) 
@@ -220,6 +234,20 @@ public class BoatController : Boyancy
 		m_rigidbody.AddRelativeForce(jumpDir * m_verticalInput * 500);
 		jump = false;
 		dive = false;
+	}
+
+	void PlayerDive()
+	{
+		Vector3 jumpDir = new Vector3 (0, -1, 1);
+		m_rigidbody.AddRelativeForce(jumpDir * m_verticalInput * 2000);
+		cameraTint.SetActive (true);
+		//m_rigidbody.isKinematic = true;
+		Vector3 pos = transform.position;
+		pos.y = -8f;
+		transform.position = pos;
+		jump = false;
+		dive = false;
+		//isUnderwater = true; 
 	}
 
 	public void StartMovement()

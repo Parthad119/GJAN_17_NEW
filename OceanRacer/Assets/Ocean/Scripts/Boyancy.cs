@@ -92,6 +92,4 @@ public class Boyancy : MonoBehaviour
 	{
 	    sink = isActive;	
 	}
-
-
 }
