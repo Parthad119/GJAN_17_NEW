@@ -922,24 +922,24 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2036333474}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d12f1930dc63c1540a68c91546505a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 572457040}
-  distance: 10
+  distance: 3
   height: 5
-  damping: 3
-  smoothRotation: 0
-  rotationDamping: 1
+  damping: 5
+  smoothRotation: 1
+  rotationDamping: 10
 --- !u!114 &2036333476
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2036333474}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7307df6d306184b80ad9c3b96d666f42, type: 3}
   m_Name: 
